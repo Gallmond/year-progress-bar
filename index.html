@@ -2,8 +2,66 @@
 <html>
    <head>
       <title>Website</title>
+      <style>
+        html, body{
+            margin: 0px; 
+            padding: 0px;
+            width: 100vw;
+            height: 100vh;
+            display: flex;
+            justify-content: center;
+        }
+
+        #information{
+            display: flex;
+            flex-direction: column;
+            font-family: 'EB Garamond';
+            text-align: center;
+            font-size: 2em;
+            align-items: center;
+            margin-top: 20vh;
+        }
+
+        #year-progress-bar{
+            -webkit-appearance: none;
+            appearance: none;
+            width: 675px;
+            height: 65px;
+            border-radius: 10px;
+            justify-items: center;
+            align-items: center;
+        }
+
+      </style>
    </head>
    <body>
-      <h1>Hello World</h1>
+        <div id="information">
+            <label for="year-progress-bar"><h1>Year Progress Bar</h1></label>
+            <progress id="year-progress-bar" max="1.0"></progress>
+            <p style="font-family: monospace;" id="year-progress-text"></p>
+        </div>
+      
+      <script>
+        const currentYear = new Date().getFullYear()
+        const startOfYear = new Date(`${currentYear}-01-01T00:00:00.0000000`).valueOf()
+        const endOfYear = new Date(`${currentYear}-12-31T23:59:59.9999999`).valueOf()
+        const yearInMilliseconds = endOfYear - startOfYear
+
+        const progressBar = document.getElementById('year-progress-bar')
+        const text = document.getElementById('year-progress-text')
+
+        const setProgress = () => {
+            const yearProgress = Date.now() - startOfYear
+            const percent = yearProgress / yearInMilliseconds
+            progressBar.value = percent
+            text.innerText = `${currentYear} is ${percent.toPrecision(15)}% complete.`
+
+            requestAnimationFrame(setProgress)
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            setProgress()
+        })
+      </script>
    </body>
 </html>
